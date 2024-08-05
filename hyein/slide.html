@@ -55,6 +55,7 @@
       const $nextBtn = document.querySelector(".next");
       const $prevBtn = document.querySelector(".prev");
       const $dots = document.querySelectorAll(".slider-dot span");
+      const $sliderDot = document.querySelector(".slider-dot");
       const slideCount = $slider.length;
       let currentIndex = 0;
 
@@ -91,13 +92,11 @@
         moveSlide();
       });
 
-      $dots.forEach((dot, index) =>
-        dot.addEventListener("click", () => {
-          // console.log(index);
-          currentIndex = index;
-          moveSlide();
-        })
-      );
+      $sliderDot.addEventListener("click", (e) => {
+        const index = Array.from($dots).indexOf(e.target);
+        currentIndex = index;
+        moveSlide();
+      });
 
       // 해당 함수의 선언 위치가 좀 헷갈림 ㅠㅠ
       updateButton();
