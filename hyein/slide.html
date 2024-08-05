@@ -62,14 +62,14 @@
       $sliderUl.style.width = `${slideCount * 100}%`;
 
       // 슬라이드를 이동시키는 함수
-      const moveToSlide = (index) => {
+      const moveSlide = (index) => {
         $sliderUl.style.transform = `translateX(-${
           (100 / slideCount) * index
         }%)`;
-        moveToButton(index);
+        updateButton(index);
       };
 
-      const moveToButton = (index) => {
+      const updateButton = (index) => {
         $dots.forEach((dot) => dot.classList.remove("active"));
         $dots[index].classList.add("active");
       };
@@ -81,7 +81,7 @@
         } else {
           currentIndex = 0;
         }
-        moveToSlide(currentIndex);
+        moveSlide(currentIndex);
       });
 
       // 이전 버튼 클릭 이벤트
@@ -91,19 +91,19 @@
         } else {
           currentIndex = slideCount - 1;
         }
-        moveToSlide(currentIndex);
+        moveSlide(currentIndex);
       });
 
       $dots.forEach((dot, index) =>
         dot.addEventListener("click", () => {
           // console.log(index);
           currentIndex = index;
-          moveToSlide(currentIndex);
+          moveSlide(currentIndex);
         })
       );
 
       // 해당 함수의 선언 위치가 좀 헷갈림 ㅠㅠ
-      moveToButton(currentIndex);
+      updateButton(currentIndex);
     </script>
   </body>
 </html>
