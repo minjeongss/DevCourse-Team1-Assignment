@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      li {
+        list-style: none;
+      }
+
+      .slide {
+        max-width: 600px;
+        width: 80%;
+        margin: auto;
+        position: relative;
+      }
+      .btn {
+        cursor: pointer;
+      }
+      .btn,
+      .slider-dot {
+        position: absolute;
+      }
+      .slider-dot {
+        /*css 수정*/
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -30px;
+      }
+      .slider-dot > span {
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: tomato;
+      }
+      .slider-dot > span:first-of-type {
+        background-color: black;
+        color: white;
+      }
+      /* .dot1 {
+        left: 0;
+      }
+      .dot2 {
+        left: 30px;
+      }
+      .dot3 {
+        left: 60px;
+      }
+      .dot4 {
+        left: 90px;
+      } */
+
+      .btn {
+        top: 50%;
+      }
+
+      .prev {
+        left: -50px;
+      }
+      .next {
+        right: -50px;
+      }
+      .slide-wrap {
+        overflow: hidden;
+      }
+      .sliderUl {
+        display: flex;
+        width: 300%;
+        /* transform: translateX(-33.3333%); */
+      }
+      .slider {
+        width: calc(100% / 3);
+      }
+      .slider:nth-of-type(3) ~ .slider {
+        display: none;
+      }
+      .slider > div {
+        position: relative;
+        padding-top: 35%;
+        overflow: hidden;
+      }
+      .slider > div > * {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .slider > div img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .slider > div p {
+        z-index: 1;
+        background-color: black;
+        color: white;
+        padding: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>슬라이드 연습</h1>
+      <section class="slide">
+        <h2>슬라이드 섹션영역</h2>
+        <div class="slide-wrap">
+          <ul class="sliderUl">
+            <li class="slider">
+              <div>
+                <p>슬라이드 번호1</p>
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Boracay_White_Beach_in_day_%28985286231%29.jpg/1200px-Boracay_White_Beach_in_day_%28985286231%29.jpg"
+                  alt=""
+                />
+              </div>
+            </li>
+            <li class="slider">
+              <div>
+                <p>슬라이드 번호2</p>
+                <img src="https://picsum.photos/400/600" alt="" />
+              </div>
+            </li>
+            <li class="slider">
+              <div>
+                <p>슬라이드 번호3</p>
+                <img src="https://picsum.photos/800/500" alt="" />
+              </div>
+            </li>
+            <li class="slider">
+              <div>
+                <p>슬라이드 번호4</p>
+                <img src="https://picsum.photos/300/600" alt="" />
+              </div>
+            </li>
+          </ul>
+        </div>
+        <button class="btn prev">이전</button>
+        <button class="btn next">다음</button>
+        <div class="slider-dot">
+          <!-- <span class="dot1">1</span>
+          <span class="dot2">2</span>
+          <span class="dot3">3</span>
+          <span class="dot4">4</span> -->
+        </div>
+      </section>
+    </main>
+  </body>
+  <script>
+    const $sliderUl = document.querySelector(".sliderUl");
+    const $slides = document.querySelectorAll(".slider");
+    const $prevButton = document.querySelector(".prev");
+    const $nextButton = document.querySelector(".next");
+    const $sliderDot = document.querySelector(".slider-dot");
+    const totalSlides = $slides.length;
+    let dots = []; //updateDots()에서 prepend나 appendChild를 여러번 쓰지 않기 위해 사용
+    let slideNumber = 1; //현재 보고있는 슬라이드의 번호
+    let flag = 0; //버튼 여러번 누를시 생기는 에러 방지
+
+    function updateDots() {
+      $sliderDot.prepend(dots[slideNumber - 1]);
+    }
+
+    const updateUlStyle = (offset, duration) => {
+      //왼쪽으로 offset 칸 이동
+      $sliderUl.style.cssText = `transform: translateX(calc(-${
+        (100 / 3) * offset
+      }%)); transition: ${duration}s `;
+    };
+
+    $prevButton.addEventListener("click", () => {
+      if (flag) return;
+      flag = 1;
+      slideNumber = slideNumber > 1 ? slideNumber - 1 : totalSlides;
+      updateUlStyle(0, 0.9);
+
+      setTimeout(() => {
+        $sliderUl.prepend($sliderUl.lastElementChild);
+        updateUlStyle(1, 0);
+        updateDots();
+        flag = 0;
+      }, 900);
+    });
+
+    $nextButton.addEventListener("click", () => {
+      if (flag) return;
+      slideNumber = slideNumber < totalSlides ? slideNumber + 1 : 1;
+      updateUlStyle(2, 0.9);
+      flag = 1;
+
+      setTimeout(() => {
+        $sliderUl.appendChild($sliderUl.firstElementChild);
+        updateUlStyle(1, 0);
+        updateDots();
+        flag = 0;
+      }, 900);
+    });
+
+    const onDotClick = (e) => {
+      const currentSlideNumber = slideNumber;
+      slideNumber = +e.target.dataset.index + 1;
+      const slideNumberDiff = slideNumber - currentSlideNumber;
+
+      updateDots();
+
+      //현재 슬라이드와 누른 번호사이의 차이만큼
+      //appendChild나 prepend를 반복 실행
+      if (slideNumberDiff > 0) {
+        for (let i = 0; i < slideNumberDiff; i++) {
+          $sliderUl.appendChild($sliderUl.firstElementChild);
+        }
+      } else if (slideNumberDiff < 0) {
+        for (let i = 0; i < -slideNumberDiff; i++) {
+          $sliderUl.prepend($sliderUl.lastElementChild);
+        }
+      }
+    };
+
+    const init = () => {
+      $sliderUl.prepend($sliderUl.lastElementChild);
+      $sliderUl.style.transform = `translateX(calc(-${100 / 3}%))`;
+      //dot하나의 width: 30px, dot사이의 gap: 5px
+      //dots의 전체 길이 = totalSlides * 30 - 5
+      $sliderDot.style.transform = `translateX(-${
+        (totalSlides * 30 - 5) / 2
+      }px)`;
+      //슬라이드 수 만큼 dot 생성
+      for (let i = 0; i < totalSlides; i++) {
+        var span = document.createElement("span");
+        span.textContent = i + 1;
+        span.style.left = `${i * 30}px`;
+        span.dataset.index = i; //onDotClick에서 사용
+        span.addEventListener("click", onDotClick);
+        $sliderDot.appendChild(span);
+        dots.push(span); //updateDots() 에서 사용
+      }
+    };
+
+    init();
+  </script>
+</html>
