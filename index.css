@@ -1,0 +1,81 @@
+:root {
+  --visible-img-cnt: 3;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ul,
+li {
+  list-style: none;
+}
+img {
+  width: 100px;
+}
+.slide {
+  margin: auto;
+  border: 5px solid lightgray;
+  width: 80%;
+  max-width: 600px;
+  position: relative;
+}
+.sliderUl {
+  /* border: 1px solid red; */
+  display: flex;
+  width: calc(100% * var(--visible-img-cnt));
+  transition: transform 1s;
+  transform: translate(calc(-100% / var(--visible-img-cnt)), 0);
+}
+.slide-wrap {
+  border: 1px solid lightgreen;
+  /* overflow: hidden; */
+}
+.slider {
+  border: 5px solid teal;
+  width: calc((100% / var(--visible-img-cnt)));
+}
+.slider > div {
+  position: relative;
+  padding-top: 35%;
+  overflow: hidden;
+}
+.slider:nth-of-type(3) ~ .slider {
+  display: none;
+}
+.slider > div > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.btn,
+.slider-dot {
+  position: absolute;
+  border: 1px solid red;
+}
+.slider-dot > span.active {
+  background-color: black;
+}
+.btn {
+  top: 50%;
+}
+
+.prev {
+  left: -50px;
+}
+
+.next {
+  right: -50px;
+}
+
+.slider > div img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slider > div p {
+  z-index: 1;
+  background-color: rgb(134, 134, 255);
+  color: white;
+  padding: 2rem;
+}
