@@ -3,29 +3,30 @@ const $prevBtn = document.querySelector(".prev");
 const $nextBtn = document.querySelector(".next");
 const $sliderDot = document.querySelector(".slider-dot");
 const $dots = $sliderDot.querySelectorAll("span");
+const $sliderUl = document.querySelector(".slider-ul");
 
 let isAnimating = false; // 애니메이션 진행중 여부
 
+const handleSecondMoveStyle = () => {
+  $sliderUl.style.transition = "transform 0.5s ease";
+  $sliderUl.style.transform = "translateX(-25%)";
+};
 const handlePrevMove = (changeCount) => {
   if (isAnimating) return;
   isAnimating = true;
 
-  const $sliderUl = document.querySelector(".slider-ul");
-  const $slider = document.querySelectorAll(".slider");
-
   for (let i = 0; i < changeCount; i++) {
-    const lastElement = $sliderUl.lastElementChild.cloneNode(true);
-    console.log(lastElement);
-    $sliderUl.removeChild($sliderUl.lastElementChild);
-    $sliderUl.insertBefore(lastElement, $sliderUl.firstElementChild);
+    $sliderUl.insertBefore(
+      $sliderUl.lastElementChild,
+      $sliderUl.firstElementChild
+    );
   }
   $sliderUl.style.transition = "none";
   $sliderUl.style.transform = "translateX(-50%)";
 
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      $sliderUl.style.transition = "transform 0.5s ease";
-      $sliderUl.style.transform = "translateX(-25%)";
+      handleSecondMoveStyle();
       $sliderUl.addEventListener(
         "transitionend",
         () => {
@@ -42,22 +43,15 @@ const handleNextMove = (changeCount) => {
   if (isAnimating) return;
   isAnimating = true;
 
-  const $sliderUl = document.querySelector(".slider-ul");
-  const $slider = document.querySelectorAll(".slider");
-
   for (let i = 0; i < changeCount; i++) {
-    const firstElement = $sliderUl.firstElementChild.cloneNode(true);
-    console.log(firstElement);
-    $sliderUl.removeChild($sliderUl.firstElementChild);
-    $sliderUl.appendChild(firstElement);
+    $sliderUl.appendChild($sliderUl.firstElementChild);
   }
   $sliderUl.style.transition = "none";
   $sliderUl.style.transform = "translateX(0)";
 
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      $sliderUl.style.transition = "transform 0.5s ease";
-      $sliderUl.style.transform = "translateX(-25%)";
+      handleSecondMoveStyle();
       $sliderUl.addEventListener(
         "transitionend",
         () => {
@@ -70,7 +64,7 @@ const handleNextMove = (changeCount) => {
   });
 };
 
-const handlePageIndex = (item) => {
+const getIndexDiff = (item) => {
   const $slider = document.querySelectorAll(".slider");
   const $sliderIndex = Number($slider[1].innerText);
   const $paginationIndex = Number(item.classList[0][3]);
@@ -80,7 +74,7 @@ const handlePageIndex = (item) => {
 };
 
 const handlePagination = (item) => {
-  let diffIndex = handlePageIndex(item);
+  let diffIndex = getIndexDiff(item);
   console.log(diffIndex);
   if (diffIndex < 0) {
     diffIndex = Math.abs(diffIndex);
@@ -109,6 +103,9 @@ $sliderDot.addEventListener("click", (e) => {
   handlePagination(destinationDot);
 });
 
-handlePrevMove(1);
-//prepend를 한 번만 진행하는 것도 방법인데?
-//4123의 형태로 두는거지
+const init = () => {
+  $sliderUl.prepend($sliderUl.lastElementChild); //! 화면 반짝이는 문제 여전히 존재
+  updatePagination();
+};
+
+init();
