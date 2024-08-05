@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/33slide.css" />
+  </head>
+  <body>
+    <main>
+      <h1>슬라이드 연습</h1>
+      <section class="slide">
+        <h2>슬라이드 영역</h2>
+        <div class="slide-wrap">
+          <ul class="sliderUl">
+            <li class="slider">
+              <div>
+                <p>슬라이드 번호1</p>
+                <img src="https://picsum.photos/400/600" alt="" />
+              </div>
+            </li>
+            <li class="slider">
+              <div>
+                <p>슬라이드 번호2</p>
+                <img src="https://picsum.photos/800/500" alt="" />
+              </div>
+            </li>
+            <li class="slider">
+              <div>
+                <p>슬라이드 번호3</p>
+                <img src="https://picsum.photos/300/600" alt="" />
+              </div>
+            </li>
+            <li class="slider">
+              <div>
+                <p>슬라이드 번호4</p>
+                <img src="https://picsum.photos/400/400" alt="" />
+              </div>
+            </li>
+          </ul>
+        </div>
+        <button class="btn prev">이전</button>
+        <button class="btn next">다음</button>
+        <div class="slider-dot">
+          <span class="dot1">1</span>
+          <span class="dot2">2</span>
+          <span class="dot3">3</span>
+          <span class="dot4">4</span>
+        </div>
+      </section>
+    </main>
+    <script>
+      const $sliderUl = document.querySelector(".sliderUl");
+      const $slider = document.querySelectorAll(".slider");
+      const $nextBtn = document.querySelector(".next");
+      const $prevBtn = document.querySelector(".prev");
+      const $dots = document.querySelectorAll(".slider-dot span");
+      const $sliderDot = document.querySelector(".slider-dot");
+      const slideCount = $slider.length;
+      let currentIndex = 0;
+
+      // sliderUl의 width를 슬라이드 개수에 따라 설정
+      $sliderUl.style.width = `${slideCount * 100}%`;
+
+      // 슬라이드를 이동시키는 함수
+      const moveSlide = () => {
+        $sliderUl.style.transform = `translateX(-${
+          (100 / slideCount) * currentIndex
+        }%)`;
+        updateButton();
+      };
+
+      const updateButton = () => {
+        $dots.forEach((dot) => dot.classList.remove("active"));
+        $dots[currentIndex].classList.add("active");
+      };
+
+      // 다음 버튼 클릭 이벤트
+      $nextBtn.addEventListener("click", () => {
+        currentIndex < slideCount - 1 ? currentIndex++ : (currentIndex = 0);
+
+        moveSlide();
+      });
+
+      // 이전 버튼 클릭 이벤트
+      $prevBtn.addEventListener("click", () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+        } else {
+          currentIndex = slideCount - 1;
+        }
+        moveSlide();
+      });
+
+      $sliderDot.addEventListener("click", (e) => {
+        const index = Array.from($dots).indexOf(e.target);
+        currentIndex = index;
+        moveSlide();
+      });
+
+      // 해당 함수의 선언 위치가 좀 헷갈림 ㅠㅠ
+      updateButton();
+    </script>
+  </body>
+</html>
