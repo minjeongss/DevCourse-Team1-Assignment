@@ -1,21 +1,7 @@
-let activeImgNumber = 1;
-const setActiveImgNumber = function (temp) {
-  activeImgNumber = temp;
-};
-const getActiveImgNumber = function () {
-  return activeImgNumber;
-};
-let isScrolling = false;
-const setIsScrolling = (bool) => {
-  if (typeof bool !== 'boolean') return;
-  isScrolling = bool;
-};
-const getIsScrolling = () => {
-  return isScrolling;
-};
-export {
-  setActiveImgNumber,
-  getActiveImgNumber,
-  setIsScrolling,
-  getIsScrolling,
+import { $sliderUl } from './elements.js';
+export const states = {
+  currentImgNumber: 1,
+  isScrolling: false,
+  totalSlides: $sliderUl.children.length,
+  timerId: null,
 };

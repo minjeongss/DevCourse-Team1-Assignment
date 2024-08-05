@@ -1,62 +1,21 @@
-import { repeatSlide, slide, slideDirection } from './utils.js';
-import { $nextBtn, $prevBtn, $sliderDot, $sliderUl } from './elements.js';
-import {
-  getActiveImgNumber,
-  getIsScrolling,
-  setActiveImgNumber,
-  setIsScrolling,
-} from './states.js';
+import { $slideBtns, $sliderDot } from './elements.js';
+import { states } from './states.js';
+import { moveSlide } from './utils.js';
 //* Events
-$sliderUl.prepend($sliderUl.lastElementChild); //! 내 코드에서 이걸 해주지 않으면 2번 이미지부터 보인다.
-
-const onClickPrevBtn = () => {
-  if (getIsScrolling()) return;
-  setIsScrolling(true);
-  slide({ direction: 'prev' });
-  setActiveImgNumber((getActiveImgNumber() - 1 + 4) % 4 || 4);
-};
-const onClickNextBtn = () => {
-  if (getIsScrolling()) return;
-  setIsScrolling(true);
-  slide({ direction: 'next' });
-};
-const onClickNumberBtn = (targetNumber) => {
-  if (getIsScrolling()) return;
-  setIsScrolling(true);
-  const diff = targetNumber - getActiveImgNumber();
-  const repeatCount = Math.abs(diff);
-  const direction = diff > 0 ? 'next' : 'prev';
-  if (diff === 0) return;
-  slide({
-    direction,
-    transitionTime: 1 / repeatCount,
-  }); //! 한 번 즉시 실행
-  repeatSlide({ repeatCount: repeatCount - 1, direction });
-};
-const onTransitionEnd = () => {
-  if (slideDirection === 'prev') {
-    $sliderUl.prepend($sliderUl.lastElementChild);
-  }
-  if (slideDirection === 'next') {
-    $sliderUl.appendChild($sliderUl.firstElementChild);
-  }
-  $sliderUl.style.transition = `none`; // 처리해주지 않으면 아래 transform에서 애니메이션 발생해버림
-  $sliderUl.style.transform = `translate(calc(-100% / 3), 0)`; // UL 원래 위치로
-  setIsScrolling(false);
-};
-const onClickDot = function (e) {
-  if (getIsScrolling()) return;
-  const $clickedDot = e.target.closest('span');
-  if (!$clickedDot) return;
-  const clickedNumber = +$clickedDot.textContent;
-  this.querySelector('.active').classList.remove('active');
-  $clickedDot.classList.add('active');
-  onClickNumberBtn(clickedNumber);
-  setActiveImgNumber(clickedNumber); // active 상태 관리
+const onClickSliderDot = (e) => {
+  const { target } = e;
+  //! $sliderDot의 높이가 0이어서 사이 공간 클릭 시 예외처리가 필요 없음
+  const targetImgNumber = +target.closest('span').dataset.imgNumber;
+  const diff = states.currentImgNumber - targetImgNumber;
+  moveSlide({ direction: diff < 0 ? 'next' : 'prev', count: Math.abs(diff) });
 };
 
 //* Event Listeners
-$prevBtn.addEventListener('click', onClickPrevBtn);
-$nextBtn.addEventListener('click', onClickNextBtn);
-$sliderUl.addEventListener('transitionend', onTransitionEnd);
-$sliderDot.addEventListener('click', onClickDot);
+$sliderDot.addEventListener('click', onClickSliderDot);
+$slideBtns.forEach(($slideBtn) =>
+  $slideBtn.addEventListener('click', () =>
+    moveSlide({
+      direction: $slideBtn.classList.contains('next') ? 'next' : 'prev',
+    })
+  )
+);

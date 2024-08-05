@@ -25,7 +25,6 @@ img {
   display: flex;
   width: calc(100% * var(--visible-img-cnt));
   transition: transform 1s;
-  transform: translate(calc(-100% / var(--visible-img-cnt)), 0);
 }
 .slide-wrap {
   border: 1px solid lightgreen;
@@ -51,11 +50,27 @@ img {
 .btn,
 .slider-dot {
   position: absolute;
-  border: 1px solid red;
 }
-.slider-dot > span.active {
-  background-color: black;
+.slider-dot {
+  bottom: -30px;
+  width: 100%;
+  left: 50%;
+  transform: translateX(-50%);
 }
+/* Dot */
+.slider-dot > span {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid black;
+  cursor: pointer;
+}
+.slider-dot > span:first-of-type {
+  background-color: tomato;
+}
+
 .btn {
   top: 50%;
 }

@@ -1,33 +1,74 @@
-import { $sliderUl } from './elements.js';
-const DEFAULT_TRANSITION_TIME = 1; // 1초
-let slideDirection = 'next'; // prev || next || number
-const setTransition = function (transitionTime) {
+import { DEFAULT_TRANSITION_TIME } from './constants.js';
+import { $sliderDot, $sliderUl } from './elements.js';
+import { states } from './states.js';
+const setTransitionTime = (transitionTime) => {
   $sliderUl.style.transition = `transform ${transitionTime}s`;
 };
-const slide = function ({
-  transitionTime = DEFAULT_TRANSITION_TIME,
-  direction, // prev ||  next
-}) {
-  setTransition(transitionTime);
-  slideDirection = direction; // prev || next
-  $sliderUl.style.transform = `translate(calc(100% / 3 * ${
-    direction === 'prev' ? 0 : -2
-  }), 0)`;
+//* 슬라이드 후 자식요소 조정
+const slideNext = ({ transitionTime, count }) => {
+  setTransitionTime(transitionTime);
+  $sliderUl.style.transform = `translateX(calc(-100% / 3 * ${count}))`;
+  setTimeout(() => {
+    setTransitionTime(0);
+    //? 우종님 소스 참고
+    while (count--) $sliderUl.appendChild($sliderUl.firstElementChild);
+    $sliderUl.style.transform = `translateX(0)`;
+  }, transitionTime * 1000);
 };
 
-const repeatSlide = function ({ repeatCount, direction }) {
-  const transitionTime = DEFAULT_TRANSITION_TIME / (repeatCount + 1); //repeatCount-1이 실질적으로 넘어오므로 + 1 해준다
-  let count = 0;
-  const intervalId = setInterval(() => {
-    if (count >= repeatCount) {
-      clearInterval(intervalId);
-      return;
-    }
-    slide({
-      direction,
-      transitionTime,
-    });
-    count++;
-  }, transitionTime * 1000 + 100); //! 콜스택이 비워질 100ms의 시간의 여유를 줌. 이 오차범위를 안 주면 transform이 안 되는 경우 발생. DEFAULT_TRANSITION_TIME이 1초일 경우 100ms가 적당하다. DEFAULT_TRANSITION_TIME을 줄일 수록 더 많은 여유가 필요한 듯.
+//* 슬라이드 전 자식요소 조정
+const slidePrev = ({ transitionTime, count }) => {
+  setTransitionTime(0);
+  $sliderUl.style.transform = `translateX(calc(-100% / 3 * ${count}))`;
+  while (count--) $sliderUl.prepend($sliderUl.lastElementChild);
+  setTimeout(() => {
+    setTransitionTime(transitionTime);
+    $sliderUl.style.transform = `translateX(0)`;
+  }); //* 최소 지연시간 4ms
 };
-export { setTransition, slide, repeatSlide, slideDirection };
+/**
+ * Slider 이동 로직입니다.
+ * Active Dot도 Slide시에만 변화하므로 함께 관리합니다.
+ * @param {number} transitionTime 슬라이드 시간
+ * @param {'prev' | 'next'} direction 슬라이드 방향
+ * @param {number} count 슬라이드할 개수
+ */
+export const moveSlide = ({
+  transitionTime = DEFAULT_TRANSITION_TIME,
+  direction = 'next',
+  count = 1,
+}) => {
+  //todo sliding 중일 때 클릭 블락
+  //? 예진님 소스 참고
+  console.log(states.timerId);
+  if (states.timerId) return;
+  states.timerId = setTimeout(() => {
+    clearTimeout(states.timerId);
+    states.timerId = null;
+  }, transitionTime * 1000);
+
+  direction === 'next'
+    ? slideNext({ transitionTime, count })
+    : slidePrev({ transitionTime, count });
+  //* moveSlide시 Dot도 함께 제어
+  const targetImgNumber =
+    direction === 'next'
+      ? states.currentImgNumber + count
+      : states.currentImgNumber - count;
+  setActiveDot(targetImgNumber);
+};
+
+/**
+ * 활성화 시킬 Dot을 찾아 $sliderDot의 첫 번째 자식요소로 만듭니다.
+ * CSS에 의해 $sliderDot의 첫 번째 자식 요소가 활성화됩니다.
+ * @param {number} targetImgNumber
+ */
+export const setActiveDot = (targetImgNumber) => {
+  states.currentImgNumber = targetImgNumber;
+  for (var i = 0; i < states.totalSlides; i++) {
+    if (+$sliderDot.children[i].dataset.imgNumber === targetImgNumber) {
+      $sliderDot.prepend($sliderDot.children[i]);
+      break;
+    }
+  }
+};
