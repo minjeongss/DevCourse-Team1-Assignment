@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+li {
+    list-style: none;
+}
+
+body {
+    background-color: rgb(234, 231, 220);
+}
+.wrap {
+    max-width: 500px;
+    width: 80%;
+    max-height: calc(100vh - 100px);
+    margin: 50px auto;
+    border-radius: 2rem;
+    overflow: hidden;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.25);
+}
+h1,
+footer {
+    text-align: center;
+    background-image: linear-gradient(
+        45deg,
+        rgb(63, 151, 175) 0%,
+        rgb(235, 209, 157) 100%
+    );
+}
+h1 {
+    height: 100px;
+    line-height: 100px;
+    color: white;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+footer {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+}
+#itemInput {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    outline: 0;
+}
+main {
+    background-color: rgb(247, 244, 238);
+}
+main > .empty {
+    text-align: center;
+    padding-bottom: 2rem;
+    display: none;
+    color: gray;
+    font-weight: bold;
+}
+main > .empty i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+main:not(:has(li)) > .empty {
+    display: block;
+}
+.items {
+    max-height: calc(100vh - 350px);
+    overflow-y: scroll;
+    padding: 1rem;
+}
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 5px dotted rgb(220, 216, 203);
+}
+.item span {
+    /* flex: 1; */
+    width: calc(100% - 50px);
+    padding: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.items::-webkit-scrollbar {
+    width: 10px;
+}
+.items::-webkit-scrollbar-thumb {
+    background-color: rgb(220, 216, 203);
+    border-radius: 5px;
+}
+.btn {
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.addBtn {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+}
+.addBtn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: black;
+}
+.deleteBtn:hover {
+    color: rgb(63, 151, 175);
+    rotate: 45deg;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Shopping List</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+            integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link rel="stylesheet" href="main.css" />
+        <script type="module" src="shop.js"></script>
+    </head>
+    <body>
+        <div class="wrap">
+            <header>
+                <h1>Shopping List</h1>
+            </header>
+            <main>
+                <ul class="items"></ul>
+                <div class="empty">
+                    <i class="fa-regular fa-file"></i>
+                    <p>비어있습니당</p>
+                </div>
+            </main>
+            <footer>
+                <input
+                    id="itemInput"
+                    type="text"
+                    placeholder="구매 항목을 입력하세요."
+                />
+                <i class="fa-solid fa-plus btn addBtn"></i>
+            </footer>
+        </div>
+    </body>
+</html>
