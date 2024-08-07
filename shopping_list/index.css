@@ -1,0 +1,131 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  --default-padding: 20px;
+  --shop-item-padding: 12px;
+  --btn-hover: #4e4e4e;
+  --btn-active: #383838;
+}
+ol,
+ul,
+li {
+  list-style: none;
+}
+body {
+  background-color: #999999;
+}
+input {
+  border: none;
+  outline: none;
+}
+button {
+  border: none;
+  background-color: black;
+  cursor: pointer;
+}
+.shop-con {
+  margin: 100px auto;
+  background: linear-gradient(to left bottom, #ff8a00, #ffb300);
+  width: 50%;
+  min-width: 400px;
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+  font-size: 1.8rem;
+  padding: var(--default-padding);
+  text-align: center;
+  color: white;
+}
+
+ol.shop_item-con {
+  position: relative;
+  background-color: #eaeaea;
+  height: 350px;
+  overflow: auto;
+  padding: 0 var(--shop-item-padding);
+}
+ol.shop_item-con:empty::after {
+  position: absolute;
+  content: 'Add Shopping List!';
+  width: 100%;
+  text-align: center;
+  color: #696969;
+  font-weight: 600;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+li.shop_item {
+  font-size: 0.9rem;
+  position: relative;
+  /* background-color: tomato; */
+  border-bottom: 1px dotted black;
+  padding: var(--shop-item-padding) 0;
+  list-style-type: decimal;
+  list-style-position: inside;
+}
+li.shop_item > input {
+  /** item edit input */
+  background-color: transparent;
+  width: calc(100% - 3rem - var(--shop-item-padding) * 2);
+}
+li.shop_item:last-child {
+  border: none;
+}
+li.shop_item:only-child {
+  border-bottom: 1px dotted black;
+}
+li.shop_item[contenteditable='true'] {
+  outline: none;
+}
+.edit-btn,
+.del-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.edit-btn {
+  right: calc(var(--shop-item-padding) * 2 + 5px);
+}
+.del-btn {
+  right: var(--shop-item-padding);
+}
+.edit-btn:hover,
+.del-btn:hover {
+  color: var(--btn-hover);
+}
+.edit-btn:active,
+.del-btn:active {
+  color: var(--btn-active);
+}
+.add-btn:hover {
+  background-color: var(--btn-hover);
+}
+.add-btn:active {
+  background-color: var(--btn-active);
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--default-padding);
+  padding-bottom: var(--default-padding);
+}
+footer > input {
+  display: block;
+  padding: 1rem;
+  width: 100%;
+}
+footer > .add-btn {
+  display: block;
+  margin: auto;
+  color: white; /* 임시 */
+  padding: 1rem;
+  border-radius: 50%;
+}
