@@ -1,0 +1,237 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+li {
+    list-style: none;
+}
+body {
+    overflow: hidden;
+}
+
+/* Commons */
+.btn {
+    outline: none;
+    background-color: white;
+    border: 1px solid #222;
+    border-radius: 3px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn:hover {
+    background-color: #222;
+    color: #fff;
+}
+
+/* Cards */
+.container {
+    max-width: 800px;
+    width: 100%;
+    margin: 100px auto;
+    padding: 0 1rem;
+    padding-bottom: 5rem;
+    position: relative;
+}
+.cardWrap {
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+}
+.cards {
+    width: 100%;
+    padding-top: 100%;
+    display: flex;
+    position: relative;
+    perspective: 1000px;
+}
+
+.card {
+    width: 100%;
+    height: 95%;
+    position: absolute;
+    top: 1rem;
+    scale: 0.9;
+    translate: -50%;
+    transform: rotateY(45deg);
+    transition: 0.5s;
+    perspective: 1000px;
+    z-index: auto;
+}
+.card.active {
+    z-index: 1000;
+    translate: 0;
+    scale: 1;
+    transform: rotateY(0);
+}
+.card.active ~ .card {
+    transform: rotateY(-45deg);
+    translate: 50%;
+}
+.card .front,
+.card .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #aaa;
+    border-radius: 1rem;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    transition: 0.5s;
+    backface-visibility: hidden;
+}
+.card .content {
+    max-height: 75%;
+    margin: 1rem;
+    padding: 0 1rem;
+    overflow: auto;
+}
+.card .front {
+    background-color: #fafafa;
+    color: #aaa;
+}
+.card.active .front {
+    background-color: white;
+    color: #222;
+}
+.card .back {
+    transform: rotateY(180deg);
+    background-color: aliceblue;
+}
+.card .front::before,
+.card .back::before {
+    content: "클릭하면 뒤집혀요";
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.75rem;
+    font-weight: normal;
+}
+.card.reverse .front {
+    transform: rotateY(-180deg);
+}
+.card.reverse .back {
+    transform: rotateY(0);
+}
+.card .removeBtn {
+    font-size: 0.9rem;
+    font-weight: normal;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+}
+.cardBtns,
+.container > .btn {
+    position: absolute;
+}
+.cardBtns {
+    left: 50%;
+    bottom: 1rem;
+    translate: -50%;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+.addBtn {
+    top: 0;
+    right: 1rem;
+}
+.clearBtn {
+    right: 1rem;
+    bottom: 1rem;
+}
+.emptyCards {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    padding: 2rem 1rem;
+    cursor: pointer;
+    display: none;
+    text-align: center;
+}
+.cardWrap:not(:has(li)) .emptyCards {
+    display: block;
+}
+@media (max-width: 600px) {
+    .container {
+        overflow: hidden;
+    }
+    .cardBtns {
+        left: 1rem;
+        translate: 0;
+        gap: 0.5rem;
+    }
+    h1 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(5px);
+    z-index: -1;
+    opacity: 0;
+    transition: 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal.on {
+    z-index: 9999;
+    opacity: 1;
+}
+.addCon {
+    max-width: 500px;
+    width: 100%;
+    background-color: lightgoldenrodyellow;
+    border-radius: 1rem;
+    position: relative;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+    padding: 2rem;
+    margin: 0 0.5rem;
+}
+.addCon p {
+    font-weight: bold;
+    font-size: 1.25rem;
+}
+.modal label {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 1rem;
+}
+.modal textarea {
+    resize: none;
+    padding: 1rem;
+    height: 4rem;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: 0.3s;
+}
+.modal textarea:focus {
+    border-color: rgb(95, 180, 255);
+}
+.modal .modalCloseBtn {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+}
