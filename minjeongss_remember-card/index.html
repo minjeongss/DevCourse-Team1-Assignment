@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./card.css" />
+    <script src="./card.js" defer></script>
+  </head>
+  <body>
+    <main class="wrap">
+      <div class="header">
+        <h2>암기 카드를 만들어보자</h2>
+        <button class="openBtn">항목 추가</button>
+      </div>
+      <ul class="cards"></ul>
+      <div class="main">
+        <button class="prevBtn">이전</button>
+        <span></span>
+        <button class="nextBtn">다음</button>
+      </div>
+      <div class="footer">
+        <button class="delBtn">모든 기록 삭제</button>
+      </div>
+      <!--? 모달을 main에 포함하여 위치하는게 맞는지 의문 -->
+      <div class="modal">
+        <div class="header">
+          <h3>새로운 항목 추가</h3>
+          <button class="closeBtn">닫기</button>
+        </div>
+        <div>
+          <p>질문</p>
+          <textarea
+            class="questionInput"
+            type="text"
+            placeholder="질문을 적어주세요"
+          ></textarea>
+          <p>답변</p>
+          <textarea
+            class="answerInput"
+            type="text"
+            placeholder="내용을 적어주세요"
+          ></textarea>
+        </div>
+        <button class="addBtn">추가하기</button>
+      </div>
+    </main>
+  </body>
+</html>
