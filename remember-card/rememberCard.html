@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        overflow: hidden;
+      }
+      .wrap {
+        max-width: 600px;
+        margin: 100px auto;
+        position: relative;
+        z-index: 9;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+      }
+      .header button,
+      .modalHeader button,
+      .submit {
+        height: 40px;
+        width: 90px;
+        border: 1px solid gray;
+        background-color: white;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .defalut {
+        width: 100%;
+        height: 400px;
+        border-radius: 2rem;
+        border: 1px solid gray;
+        margin-top: 5rem;
+        text-align: center;
+        align-content: center;
+        font-size: 2rem;
+      }
+      .defalut.hidden {
+        display: none;
+      }
+      .main {
+        position: relative;
+        margin: 50px 0;
+        width: 100%;
+        height: 400px;
+        perspective: 900px;
+        display: none;
+      }
+      .main.show {
+        display: block;
+      }
+      .card {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        font-size: 2rem;
+        transition: 0.9s;
+        perspective: 900px;
+      }
+      .front::before {
+        content: "클릭하면 뒤집혀요";
+        position: absolute;
+        font-size: 1rem;
+        top: 1rem;
+        right: 1rem;
+        color: gray;
+      }
+      .front,
+      .back {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        backface-visibility: hidden;
+        text-align: center;
+        align-content: center;
+        transition: 0.9s;
+        transform: rotateY(0deg);
+        border-radius: 1rem;
+        box-shadow: 0 0 10px gray;
+        background-color: white;
+        overflow: auto;
+      }
+      .back {
+        transform: rotateY(-180deg);
+      }
+      .prev {
+        transform: translateX(-300px) rotateY(45deg);
+        opacity: 0;
+      }
+      .active {
+        z-index: 9;
+        opacity: 1;
+      }
+      .next {
+        transform: translateX(300px) rotateY(-45deg);
+        opacity: 0;
+      }
+      .footer {
+        display: flex;
+        justify-content: center;
+        display: none;
+      }
+      .footer.show {
+        display: flex;
+      }
+      .footer button {
+        margin: 0 1.5rem;
+        background-color: transparent;
+        border: 0;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      .delete {
+        position: absolute;
+        bottom: -5rem;
+        right: 0;
+        width: 130px;
+        height: 40px;
+        border: 1px solid gray;
+        background-color: white;
+        font-weight: bold;
+        cursor: pointer;
+        display: none;
+      }
+      .delete.show {
+        display: block;
+      }
+      .modal {
+        width: 100%;
+        height: 100%;
+        background-color: lightgrey;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: 0.3s;
+      }
+      .modal.show {
+        z-index: 99;
+        opacity: 1;
+      }
+      .modalHeader {
+        width: 400px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .modalMain {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        margin: 2rem 0;
+      }
+      .modalMain textarea {
+        height: 4rem;
+        padding: 0.5rem;
+      }
+      .modalMain span:last-child {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="wrap">
+      <div class="header">
+        <h1>암기를 재미있게! 플래쉬 카드</h1>
+        <button class="add">항목 추가</button>
+      </div>
+      <div class="main">
+        <!-- <div class="card">
+          <div class="front">resize 이벤트란1</div>
+          <div class="back">1111111</div>
+        </div>
+        <div class="card next">
+          <div class="front">resize 이벤트란2</div>
+          <div class="back">2222222</div>
+        </div>
+        <div class="card next">
+          <div class="front">resize 이벤트란3</div>
+          <div class="back">3333333</div>
+        </div> -->
+      </div>
+      <div class="defalut">항목을 추가하세요.</div>
+      <div class="footer">
+        <button class="prevBtn">이전</button>
+        <span class="currentPage">1</span>
+        <span>/</span>
+        <span class="totalPage">3</span>
+        <button class="nextBtn">다음</button>
+      </div>
+      <button class="delete">모든 기록 삭제</button>
+    </section>
+    <section class="modal">
+      <form class="wrap">
+        <div class="modalHeader">
+          <h2>새로운 항목 추가</h2>
+          <button class="modalClose">닫기</button>
+        </div>
+        <div class="modalMain">
+          <span>질문</span>
+          <textarea
+            class="question"
+            placeholder="질문을 적어주세요"
+            name=""
+            id=""
+          ></textarea>
+          <!-- <span>필수 작성 요소입니다</span> -->
+        </div>
+        <div class="modalMain">
+          <span>답변</span>
+          <textarea
+            class="content"
+            placeholder="내용을 적어주세요"
+            name=""
+            id=""
+          ></textarea>
+        </div>
+        <button class="submit">추가하기</button>
+      </form>
+    </section>
+  </body>
+  <script>
+    const $add = document.querySelector(".add");
+    const $main = document.querySelector(".main");
+    const $defalut = document.querySelector(".defalut");
+    const $cards = document.querySelectorAll(".card");
+    const $modal = document.querySelector(".modal");
+    const $modalClose = $modal.querySelector(".modalClose");
+    const $prevBtn = document.querySelector(".prevBtn");
+    const $nextBtn = document.querySelector(".nextBtn");
+    const $footer = document.querySelector(".footer");
+    const $currentPage = document.querySelector(".currentPage");
+    const $totalPage = document.querySelector(".totalPage");
+    const $question = $modal.querySelector(".question");
+    const $content = $modal.querySelector(".content");
+    const $submit = document.querySelector(".submit");
+    const $delete = document.querySelector(".delete");
+    let index = 0;
+    let flag = false;
+    let cardList = JSON.parse(localStorage.getItem("cardList")) || [];
+
+    const saveToLoacalStorage = () => {
+      localStorage.setItem("cardList", JSON.stringify(cardList));
+    };
+
+    $add.addEventListener("click", () => {
+      $modal.classList.add("show");
+    });
+
+    $modalClose.addEventListener("click", () => {
+      $modal.classList.remove("show");
+    });
+
+    $prevBtn.addEventListener("click", () => {
+      if (index === 0 || flag) return;
+      flag = true;
+      $main.children[index].classList.remove("active");
+      $main.children[index].classList.add("next");
+      $main.children[index - 1].classList.remove("prev");
+      $main.children[index - 1].classList.add("active");
+      index--;
+      setPage();
+      setTimeout(() => {
+        flag = false;
+      }, 500);
+    });
+
+    $nextBtn.addEventListener("click", () => {
+      if (index === cardList.length - 1 || flag) return;
+      flag = true;
+      $main.children[index].classList.remove("active");
+      $main.children[index].classList.add("prev");
+      $main.children[index + 1].classList.remove("next");
+      $main.children[index + 1].classList.add("active");
+      index++;
+      setPage();
+      setTimeout(() => {
+        flag = false;
+      }, 500);
+    });
+
+    const createItem = (newItem) => {
+      let $div = document.createElement("div");
+      $div.classList.add("card");
+      $div.classList.add("next");
+      $div.innerHTML = `
+            <div class="front">${newItem.question}</div>
+          <div class="back">${newItem.content}</div>
+        `;
+      return $div;
+    };
+
+    const setPage = () => {
+      $currentPage.innerText = index + 1;
+      $totalPage.innerText = cardList.length;
+    };
+
+    $submit.addEventListener("click", (e) => {
+      e.preventDefault();
+      let success = true;
+      if (!$question.value) {
+        if (!$question.nextElementSibling) {
+          let span = document.createElement("span");
+          span.innerText = "필수 작성 요소입니다.";
+          $question.insertAdjacentElement("afterend", span);
+        }
+        success = false;
+      }
+      if (!$content.value) {
+        if (!$content.nextElementSibling) {
+          let span = document.createElement("span");
+          span.innerText = "필수 작성 요소입니다.";
+          $content.insertAdjacentElement("afterend", span);
+        }
+        success = false;
+      }
+      if (!success) return;
+
+      const newItem = { question: $question.value, content: $content.value };
+      cardList.push(newItem);
+      saveToLoacalStorage();
+      const item = createItem(newItem);
+      $main.appendChild(item);
+
+      setPage();
+      window.location.reload();
+      $question.value = "";
+      $content.value = "";
+      $modal.classList.remove("show");
+    });
+
+    $delete.addEventListener("click", () => {
+      cardList = [];
+      localStorage.removeItem("cardList");
+      window.location.reload();
+    });
+
+    const init = () => {
+      //$cards[0].classList.add("active");
+      $totalPage.innerText = cardList.length;
+      if (cardList.length !== 0) {
+        $main.classList.add("show");
+        $delete.classList.add("show");
+        $footer.classList.add("show");
+        $defalut.classList.add("hidden");
+      }
+      cardList.forEach((v, index) => {
+        const item = createItem(v);
+        if (index === 0) {
+          item.classList.add("active");
+          item.classList.remove("next");
+        }
+        $main.appendChild(item);
+      });
+      $main.childNodes.forEach((v) => {
+        v.addEventListener("click", (e) => {
+          if (e.target.nextElementSibling) {
+            e.target.style.transform = "rotateY(180deg)";
+            e.target.nextElementSibling.style.transform = "rotateY(0deg)";
+          } else {
+            e.target.style.transform = "rotateY(-180deg)";
+            e.target.previousElementSibling.style.transform = "rotateY(0deg)";
+          }
+        });
+      });
+    };
+
+    init();
+  </script>
+</html>
