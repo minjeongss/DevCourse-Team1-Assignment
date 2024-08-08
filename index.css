@@ -1,0 +1,268 @@
+:root {
+  --card-width: calc(100% / 3);
+  --p-color: #c5705d;
+  --p-dark: #ab5643;
+  --2nd-color: #d0b8a8;
+  --3rd-color: #dfd3c3;
+  --4th-color: #f8ede3;
+  --shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  --border-shadow: 0px 0px 4px rgba(0, 0, 0, 0.5);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  line-height: 1;
+}
+body {
+  background-color: var(--2nd-color);
+  font-family: 'Noto Sans KR', sans-serif;
+}
+ul,
+li {
+  list-style: none;
+}
+
+button {
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: var(--p-color);
+  color: var(--4th-color);
+}
+button:hover {
+  background-color: var(--p-dark);
+  color: var(--3rd-color);
+}
+i {
+  cursor: pointer;
+}
+.wrap {
+  margin: 200px auto;
+  position: relative;
+  width: 80%;
+  background-color: var(--3rd-color);
+  border-radius: 10px;
+  max-width: 800px;
+}
+textarea {
+  resize: none;
+  width: 100%;
+  border: none;
+  padding: 15px 10px;
+  margin-top: 5px;
+  font-family: 'Noto Sans KR', sans-serif;
+  outline: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  margin-top: 10px;
+}
+textarea::placeholder {
+  line-height: 1;
+}
+textarea:focus {
+  box-shadow: 0 0 0 2px var(--p-color) inset;
+}
+textarea:focus::placeholder {
+  color: transparent;
+}
+.card-con {
+  position: relative;
+  position: relative;
+  height: 400px; /* 임시 */
+}
+.card-con:empty:after {
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 25px;
+  content: '새로운 카드를 입력해 주세요';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+/* 카드 전체 */
+.card {
+  position: absolute;
+  width: var(--card-width);
+  height: 250px; /* 임시 */
+  transition: transform 0.5s, opacity 0.5s;
+}
+.card .question.rotate {
+  transform: rotateY(-180deg);
+}
+.card .answer.rotate {
+  transform: rotateY(0);
+}
+/* 앞 뒷면 */
+.card > .question,
+.card > .answer {
+  border-radius: 10px;
+  display: flex;
+  box-shadow: var(--border-shadow);
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background-color: var(--4th-color);
+  transition: transform 0.5s;
+}
+.card > .answer {
+  transform: rotateY(180deg);
+}
+
+.card.left,
+.card.right {
+  top: 50%;
+  perspective: 500px;
+  /*! 사이드 카드는 뒤집기, 삭제 차단. 해제해도 되긴 하나 ux적으로 깔끔하지 않은듯 */
+  pointer-events: none;
+}
+.card.left,
+.card.right,
+.card.center {
+  opacity: 1;
+}
+.card.left {
+  transform: translate(50%, -50%);
+}
+.card.left > .question {
+  transform: rotateY(20deg);
+}
+.card.left > .question.rotate {
+  transform: rotateY(200deg);
+}
+.card.left > .answer {
+  transform: rotateY(200deg);
+}
+.card.left > .answer.rotate {
+  transform: rotateY(380deg);
+}
+.card.center {
+  /* center */
+  top: 50%;
+  transform: translate(100%, -50%); /*? 넣어줘야하나? rotateY */
+  z-index: 1;
+}
+
+.card.right {
+  transform: translate(150%, -50%);
+}
+.card.right > .question {
+  transform: rotateY(-20deg);
+}
+.card.right > .question.rotate {
+  transform: rotateY(-200deg);
+}
+.card.right > .answer {
+  transform: rotateY(200deg);
+}
+.card.right > .answer.rotate {
+  transform: rotateY(-20deg);
+}
+.card.waiting {
+  /* 대기중인 카드 */
+  z-index: -1;
+  opacity: 0;
+  /* border: 5px solid yellow; */
+}
+.btn-con {
+  width: 100%;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+.del_all-btn {
+  position: absolute;
+  right: 0;
+}
+.modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--p-color);
+  padding: 4px;
+  border-radius: 5px;
+  color: var(--4th-color);
+  z-index: 1;
+}
+.modal-btn:hover {
+  background-color: var(--p-dark);
+}
+.modal-wrap {
+  transition: opacity 0.3s;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.modal {
+  transition: opacity 0.3s;
+  opacity: 0;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: var(--shadow);
+}
+.add.modal {
+  min-width: 350px;
+  width: 70%;
+  background-color: var(--3rd-color);
+  padding: 3rem 4rem;
+  border-radius: 10px;
+  pointer-events: none;
+}
+.add.modal > div {
+  /* question, answer container */
+  margin-top: 20px;
+}
+.add.modal h2 {
+  font-size: 20px;
+}
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+.on {
+  opacity: 1 !important;
+  pointer-events: all !important;
+  z-index: 1000;
+}
+.add-btn {
+  margin-top: 10px;
+}
+.del-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.alert.modal {
+  width: 300px;
+  height: 200px;
+  background-color: var(--p-color);
+  color: var(--4th-color);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.num-con {
+}

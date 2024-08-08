@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>암기 카드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Noto+Sans+KR:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./index.css" />
+    <script
+      src="https://kit.fontawesome.com/a40723187e.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./index.js" defer></script>
+  </head>
+  <body>
+    <div class="modal-wrap"></div>
+    <div class="add modal">
+      <h2>추가하기</h2>
+      <i class="fa-solid fa-x close-btn"></i>
+      <div class="question">
+        <span>질문</span>
+        <textarea class="question" placeholder="질문을 적어주세요"></textarea>
+      </div>
+      <div class="answer">
+        <span>답변</span>
+        <textarea class="answer" placeholder="답변을 적어주세요"></textarea>
+      </div>
+      <button class="add-btn">추가하기</button>
+    </div>
+    <div class="alert modal">
+      <p>질문, 답변을 모두 입력하십시오.</p>
+    </div>
+    <div class="wrap">
+      <i class="fa-solid fa-plus modal-btn"></i>
+      <ul class="card-con"></ul>
+      <div class="btn-con">
+        <i class="prev-btn fa-solid fa-arrow-left"></i>
+        <div class="num-con">
+          <span class="active-page">0</span><span>/</span
+          ><span class="total-page">0</span>
+        </div>
+        <i class="next-btn fa-solid fa-arrow-right"></i>
+        <button class="del_all-btn">모두 삭제</button>
+      </div>
+    </div>
+  </body>
+</html>
