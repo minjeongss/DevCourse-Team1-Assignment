@@ -199,7 +199,7 @@ $nextBtn.addEventListener("click", () => {
   updateCardSelected();
   updateCardCount();
 });
-$cards.addEventListener("mouseover", (e) => {
+$cards.addEventListener("click", (e) => {
   const li = e.target;
   if (li.classList.contains("card")) {
     const pQ = li.querySelector(".question");
