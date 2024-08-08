@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 500px;
+      }
+      .modal {
+        display: block;
+        background-color: rgba(255, 255, 255, 0.5);
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        backdrop-filter: blur(2px);
+      }
+      .modal .inner {
+        width: 60%;
+        padding: 100px;
+        border: 1px solid red;
+        margin: 100px auto 0 auto;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 1rem;
+      }
+      .items {
+        display: flex;
+      }
+      .items li.active {
+        list-style: none;
+        text-align: center;
+        width: 200px;
+        height: 200px;
+        border-radius: 15px;
+        background-color: rgba(229, 221, 221, 0.711);
+        transform: translateX(0);
+      }
+      .addListBtn {
+        width: 100px;
+        height: 30px;
+      }
+    </style>
+    <!-- <script src="./flashCard.js" defer></script> -->
+  </head>
+  <body>
+    <div class="header">
+      <h2>암기를 재미있게! 플래쉬 카드</h2>
+      <button class="addListBtn">항목 추가</button>
+    </div>
+    <ul class="items"></ul>
+    <div class="footer">
+      <button class="prevBtn">이전</button>
+      <button class="nextBtn">다음</button>
+    </div>
+    <button class="deleteAllBtn">모든 기록 삭제</button>
+    <script>
+      const $items = document.querySelector(".items");
+      const $deleteAllBtn = document.querySelector(".deleteAllBtn");
+      const $addListBtn = document.querySelector(".addListBtn");
+      const $prevBtn = document.querySelector(".prevBtn");
+      const $nextBtn = document.querySelector(".nextBtn");
+
+      let questionList = JSON.parse(localStorage.getItem("questionList")) || [];
+      let currentIndex = 0;
+
+      $items.style.width = `${questionList.length * 100}%`;
+
+      // local에 저장하기
+      const saveToLocalStorage = () => {
+        localStorage.setItem("questionList", JSON.stringify(questionList));
+      };
+
+      // local 비우기
+      const deleteAll = () => {
+        window.localStorage.clear();
+        questionList = [];
+        currentIndex = 0;
+        $items.innerHTML = "";
+      };
+
+      // 모달창 띄우고 값 저장
+      const displayModal = () => {
+        const $modal = document.createElement("section");
+        $modal.classList.add("modal");
+
+        const $inner = document.createElement("div");
+        $inner.classList.add("inner");
+        $inner.innerHTML = `
+            <button class="closeBtn">닫기</button>
+            <p>질문</p>
+            <input class="question" />
+            <p>답변</p>
+            <input class="answer" />
+            <button class="modalAddBtn">추가하기</button>
+          
+        `;
+
+        $modal.appendChild($inner);
+        document.body.appendChild($modal);
+
+        const $closeBtn = document.querySelector(".closeBtn");
+        $closeBtn.addEventListener("click", () => {
+          $modal.remove();
+        });
+
+        const $modalAddBtn = document.querySelector(".modalAddBtn");
+        $modalAddBtn.addEventListener("click", () => {
+          const $question = document.querySelector(".question");
+          const $answer = document.querySelector(".answer");
+          questionList.push({
+            question: $question.value,
+            answer: $answer.value,
+          });
+          saveToLocalStorage();
+          $modal.remove();
+        });
+      };
+
+      // 리스트를 카드로 띄우기
+      const createCard = (item) => {
+        const $li = document.createElement("li");
+        $li.setAttribute("class", "item");
+        $li.setAttribute("data-num", item.id);
+        $li.innerHTML = `
+    <span>${item.question}</span>
+    `;
+        return $li;
+      };
+
+      // 인덱스 값에 따른 현재 카드 보여주기
+      const showCurrentCard = () => {
+        $items.innerHTML = "";
+        questionList.forEach((item, index) => {
+          const itemElm = createCard(item);
+          if (index === currentIndex) {
+            itemElm.classList.add("active");
+          }
+          $items.appendChild(itemElm);
+        });
+      };
+
+      // 화면 로드시 카드 띄우기
+      window.addEventListener("load", () => {
+        questionList.length !== 0 ? showCurrentCard() : displayModal();
+      });
+
+      // 다음 버튼 클릭 시 이동
+      $nextBtn.addEventListener("click", () => {
+        if (currentIndex < questionList.length - 1) {
+          const currentCard = $items.querySelector(".item");
+          currentCard.style.transform = "translateX(-100%)";
+          currentIndex++;
+          setTimeout(() => {
+            currentCard.remove();
+            showCurrentCard();
+          }, 300);
+        } else if (currentIndex === questionList.length - 1) {
+          currentIndex++;
+          showCurrentCard();
+        }
+      });
+
+      // 이전 버튼 클릭 시 이동
+      $prevBtn.addEventListener("click", () => {
+        if (currentIndex > 0) {
+          const currentCard = $items.querySelector(".item");
+          currentCard.style.transform = "translateX(100%)";
+          currentIndex--;
+          setTimeout(() => {
+            currentCard.remove();
+            showCurrentCard();
+          }, 300);
+        }
+      });
+
+      $deleteAllBtn.addEventListener("click", () => deleteAll());
+      $addListBtn.addEventListener("click", () => displayModal());
+    </script>
+  </body>
+</html>
