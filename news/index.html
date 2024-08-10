@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Noto+Sans+KR:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="index.css" />
+    <title></title>
+    <script
+      src="https://kit.fontawesome.com/a40723187e.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./index.js" defer></script>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>NEWS</h1>
+      <nav>
+        <ul class="category-con">
+          <!-- todo category 받아오기 -->
+          <li class="category" data-category="business">
+            <button>Business</button>
+          </li>
+          <li class="category" data-category="entertainment">
+            <button>Entertainment</button>
+          </li>
+          <li class="category" data-category="general">
+            <button>General</button>
+          </li>
+          <li class="category" data-category="health">
+            <button>Health</button>
+          </li>
+          <li class="category" data-category="science">
+            <button>Science</button>
+          </li>
+          <li class="category" data-category="sports">
+            <button>Sports</button>
+          </li>
+          <li class="category" data-category="technology">
+            <button>Technology</button>
+          </li>
+        </ul>
+      </nav>
+      <form class="input-area">
+        <input type="text" placeholder="검색어를 입력해주세요." />
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </form>
+      <ul class="news-con" id="news-con"></ul>
+      <div class="pagination-con">
+        <i class="fa-solid fa-caret-left fa-xl prev"></i
+        ><i class="fa-solid fa-caret-right fa-xl next"></i>
+      </div>
+    </div>
+  </body>
+</html>

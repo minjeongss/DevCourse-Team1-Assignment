@@ -1,0 +1,232 @@
+:root {
+  --p-color: #f5f5dc; /* Primary color (Beige) */
+  --s-color: #8b4513; /* Secondary color (SaddleBrown) */
+  --s-dark: #69330c;
+  --t-color: #d2b48c; /* Tertiary color (Tan) */
+  --f-color: #a0522d; /* Fourth color (Sienna) */
+  --fi-color: #deb887; /* Fifth color (BurlyWood) */
+  overflow-x: hidden;
+}
+/* Common */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+h1 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 20px;
+  color: white;
+  letter-spacing: 15px;
+}
+ol,
+ul,
+li {
+  list-style: none;
+}
+button {
+  border: none;
+  cursor: pointer;
+  color: white;
+  transition: background 0.2s;
+  background-color: var(--s-color);
+}
+
+button:hover {
+  background-color: var(--fi-color);
+  filter: brightness(1.05);
+}
+button:active {
+  filter: brightness(1);
+}
+i {
+  cursor: pointer;
+}
+
+input {
+  transition: border-color 0.3s;
+  outline: none;
+  border-radius: 10px;
+  border: 3px solid white;
+}
+input:focus {
+  border-color: var(--s-dark);
+}
+a {
+  color: inherit;
+  /* text-decoration: none; */
+}
+a:visited {
+  color: inherit;
+}
+body {
+  background-color: var(--p-color);
+  font-family: 'Noto Sans KR', sans-serif;
+  padding-bottom: 50px;
+}
+
+/* News */
+.wrap {
+  background-color: var(--f-color);
+  position: relative;
+  width: 100%;
+  margin: 50px auto;
+  max-width: 1000px;
+  min-width: 400px;
+  padding: 20px;
+  min-height: 400px;
+}
+
+/* Category */
+/* 반응형 작업 필요 */
+ul.category-con {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  position: relative;
+}
+ul.category-con:empty::after {
+  content: 'No Article!';
+  position: absolute;
+}
+li.category {
+  transition: background 0.2s;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+li.category:hover,
+li.category.on {
+  background-color: var(--s-dark);
+}
+li.category > button {
+  padding: 10px;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+}
+
+/* Input */
+.input-area {
+  position: relative;
+  margin-bottom: 10px;
+}
+.input-area > .searched-word {
+  margin-top: 5px;
+  display: block;
+  color: white;
+  position: relative;
+}
+.input-area > .searched-word::before {
+  content: '검색한 단어 - ';
+}
+.input-area > input {
+  padding: 1rem;
+  width: 100%;
+}
+.input-area > i {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  translate: 0 -50%;
+  cursor: pointer;
+}
+.input-area > i:hover {
+  color: var(--f-color);
+}
+.input-area > i:active {
+  color: var(--s-color);
+}
+
+/* News */
+ul.news-con {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+}
+ul.news-con {
+  /* background-color: tomato !important; */
+}
+ul.news-con:empty pagination-con > .prev::before,
+ul.news-con:empty pagination-con > .next::before {
+  color: tomato !important;
+}
+
+li.news {
+  padding: 10px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.1), -2px -2px 1px rgba(0, 0, 0, 0.1);
+  background-color: var(--t-color);
+  transition: scale 0.15s;
+  transform-origin: center bottom;
+}
+li.news:hover {
+  scale: 1.025;
+  z-index: 1;
+}
+li.news > .news-img {
+  position: relative;
+  width: 100%;
+  padding-top: 50%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+li.news img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+li.news > * {
+  width: 100%;
+}
+li.news > .tit,
+li.news > .desc {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+li.news > .tit {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+li.news > .more {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pagination-con {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 10px);
+  translate: -50%;
+  gap: 5px;
+}
+.pagination-con > .pagination-btn {
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+  display: none;
+}
+.pagination-con > .pagination-btn.visible {
+  display: inline-block;
+}
+.pagination-con > .pagination-btn.on {
+  background-color: var(--fi-color);
+}
