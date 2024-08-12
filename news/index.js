@@ -162,9 +162,9 @@ const onClickPaginationCon = (e) => {
       category,
     });
 };
-const onClickSearchBtn = () => {
+const onClickSearchBtn = async () => {
   currentSearchingInput = input; //* 검색어 변경
-  getAndRenderNews({
+  await getAndRenderNews({
     page: 1,
     category,
     input, //* 자동으로 currentSearchingInput이 들어감
@@ -190,7 +190,7 @@ const onClickSearchBtn = () => {
 $categoryCon.addEventListener('mouseup', onClickCategoryCon);
 $paginationCon.addEventListener('mouseup', onClickPaginationCon);
 $searchBtn.addEventListener('mouseup', onClickSearchBtn);
-$searchInput.addEventListener('keyup', (e) => {
+$searchInput.addEventListener('keydown', (e) => {
   input = $searchInput.value;
   if (e.key === 'Enter') {
     e.preventDefault();
